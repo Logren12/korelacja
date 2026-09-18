@@ -113,7 +113,7 @@ server <- function(input, output, session) {
       else {
         ŻYCIA <<- ŻYCIA - 1
         output$serce <- serce_emoji
-        if(ŻYCIA == 0){
+        if(ŻYCIA <= 0){
           replicate(KOPIE, {removeUI(selector='#zgadywanie', immediate = T)})
           removeUI(selector='#następny', immediate = T)
           showModal(
@@ -148,9 +148,17 @@ server <- function(input, output, session) {
       return(50)}
     else{
       ŻYCIA <<- ŻYCIA - 1
-      if(ŻYCIA == 0){
+      if(ŻYCIA <= 0){
         replicate(KOPIE, {removeUI(selector='#zgadywanie', immediate = T)})
         removeUI(selector='#następny', immediate = T)
+        showModal(
+          modalDialog(
+            title = "Koniec gry!",
+            easyClose = TRUE,
+            footer = NULL,
+            paste0("Wynik: ", PUNKTY)
+          )
+        )
         insertUI(selector = "#następny",
                  where = "afterEnd",
                  ui = actionButton("reset", label = "Nowa Gra"))
